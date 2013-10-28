@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Communicating with the Zabbix API</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script type="text/javascript" src="js/libs/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="js/libs/json2/json2.min.js"></script>
+        <script type="text/javascript" src="js/libs/ReferenceJavascript.js"></script>
+        <script type="text/javascript">
+            var the_object;
+            var http_request = new XMLHttpRequest();
+            var jsonrpc = {
+            'jsonrpc': '2.0',
+            'method': 'user.login',
+            'params': {
+            'user': 'admin',
+            'password': 'unicorns4ever!'
+            },
+            'id': 1
+            };
+            http_request.open( "POST", 'http://hh.seravo.fi/zabbix/api_jsonrpc.php', true );
+            http_request.setRequestHeader('Content-Type', 'application/json-rpc');
+            http_request.send(jsonrpc);
+            http_request.onreadystatechange = function () {
+            if ( http_request.readyState === 4 ) {
+            if ( http_request.status === 200 ) {
+            the_object = eval( "(" + http_request.responseText + ")" );
+            document.getElementById("zone").innerHTML = http_request.responseText;
+            } else {
+            alert( "There was a problem with the URL." );
+            }
+            http_request = null;
+            }
+            };
+        </script>
+
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <div id="zone"></div>
+    </body>
+</html>
+
