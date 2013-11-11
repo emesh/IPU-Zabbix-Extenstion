@@ -1,49 +1,39 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>Communicating with the Zabbix API</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <script type="text/javascript" src="js/libs/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="js/libs/json2/json2.min.js"></script>
-        <script type="text/javascript" src="js/libs/ReferenceJavascript.js"></script>
-        <script type="text/javascript">
-            var the_object;
-            var http_request = new XMLHttpRequest();
-            var jsonrpc = {
-            'jsonrpc': '2.0',
-            'method': 'user.login',
-            'params': {
-            'user': 'admin',
-            'password': 'unicorns4ever!'
-            },
-            'id': 1
-            };
-            http_request.open( "POST", 'http://hh.seravo.fi/zabbix/api_jsonrpc.php', true );
-            http_request.setRequestHeader('Content-Type', 'application/json-rpc');
-            http_request.send(jsonrpc);
-            http_request.onreadystatechange = function () {
-            if ( http_request.readyState === 4 ) {
-            if ( http_request.status === 200 ) {
-            the_object = eval( "(" + http_request.responseText + ")" );
-            document.getElementById("zone").innerHTML = http_request.responseText;
-            } else {
-            alert( "There was a problem with the URL." );
-            }
-            http_request = null;
-            }
-            };
-        </script>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>jQuery plugin for Zabbix API demo</title>
+    <link rel="stylesheet" type="text/css" href="main.css" media="screen" />
+    <script type="text/javascript" charset="utf-8" src="jquery-1.4.2.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jqzabbix.js"></script>
+    <script type="text/javascript" charset="utf-8" src="main.js"></script>
+</head>
+<body>
+    <!-- header -->
+    <div id="header"><h1>jQuery plugin for Zabbix API demo</h1></div>
+    <!-- contens -->
+    <div id="login">
+        <form>
+            <ul>
+                <li>Username <input type="text" name="username" value="admin" /></li>
+                <li>Password <input type="password" name="password" value="unicorns4ever!" /></li>
+            </ul>
+            <p><input type="button" value="Authenticate" onclick="doAuth(this.form)" /></p>
+        </form>
+    </div>
+    <div id="request" style="display:none;">
+        <form>
+            <ul>
+                <li>Method: <select class="method1" name="method1" onchange="changeMethod2(this.value)"></select> . <select class="method2" name="method2" onchange="changeParameters(this.form.method1.value, this.form.method2.value)"></select></li>
+                <li><a href="javascript:toggleParameters()">Parameters</a></li>
+                <p class="parameters"></p>
+                <li><input type="button" value="Send Request" onclick="doRequest(this.form)" /></li>
+            </ul>
+        </form>
+    </div>
+    <div id="result"></div>
+    <!-- footer -->
 
-    </head>
-    <body>
-        <div>TODO write content</div>
-        <div id="zone"></div>
-    </body>
+    <div id="footer"><address>Copyright &copy 2011 Kodai Terashima. <a href="http://www.mozaby.com">Mozaby</a> project.</address></div>
+</body>
 </html>
-
